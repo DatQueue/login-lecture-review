@@ -5,22 +5,38 @@ const psWord = document.querySelector("#psWord");
 const loginBtn = document.querySelector("button");
 
 loginBtn.addEventListener("click", () => {
-  login();
+  submitLogin();
 });
 
-let login = () => {
+let login = async () => {
   const req = {
     id: id.value,
     psWord: psWord.value,
   };
 
-  fetch("http://localhost:3000/login", {
+  const res = await fetch("http://localhost:3000/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(req),
-  })
-    .then((res) => res.json())
-    .then(console.log);
+  });
+
+  if (!res.ok) {
+    const msg = `An error has occured : ${res.status}`;
+    throw new Error(msg);
+  }
+  console.log(res.status);
+  const loginInfo = await res.json();
+  return loginInfo;
+};
+
+let submitLogin = () => {
+  login().then((loginInfo) => {
+    if (loginInfo.success) {
+      location.href = "/";
+    } else {
+      alert(loginInfo.msg);
+    }
+  });
 };
