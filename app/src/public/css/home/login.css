@@ -43,6 +43,9 @@
 .form button:hover,.form button:active,.form button:focus {
   background: #43A047;
 }
+.form button:active {
+  padding: 14.5px;
+}
 .form .message {
   margin: 15px 0 0;
   color: #b3b3b3;
@@ -51,9 +54,6 @@
 .form .message a {
   color: #4CAF50;
   text-decoration: none;
-}
-.form .register-form {
-  display: none;
 }
 .container {
   position: relative;
