@@ -4,14 +4,31 @@ const id = document.querySelector("#id");
 const name = document.querySelector("#name");
 const psWord = document.querySelector("#psWord");
 const confirmPsWord = document.querySelector("#confirm-psWord");
-const signUpBtn = document.querySelector("button");
+const registerBtn = document.querySelector("button");
 
-signUpBtn.addEventListener("click", (e) => {
+registerBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  submitSignUp();
+  submitRegister();
 });
 
-let signUp = async () => {
+let register = async () => {
+  const ifIdBlankMsg = "아이디를 작성해주세요.";
+  const ifNameBlankMsg = "이름을 작성해주세요.";
+  const ifPsWordBlankMsg = "비밀번호를 작성해주세요.";
+  const psWordConfirmFailedMsg = "비밀번호가 일치하지 않습니다.";
+  if (!id.value) {
+    return alert(ifIdBlankMsg);
+  }
+  if (!name.value) {
+    return alert(ifNameBlankMsg);
+  }
+  if (!psWord.value) {
+    return alert(ifPsWordBlankMsg);
+  }
+  if (psWord.value !== confirmPsWord.value) {
+    return alert(psWordConfirmFailedMsg);
+  }
+
   const req = {
     id: id.value,
     name: name.value,
@@ -32,16 +49,16 @@ let signUp = async () => {
     throw new Error(msg);
   }
   console.log(res.status);
-  const signUpInfo = await res.json();
-  return signUpInfo;
+  const registerInfo = await res.json();
+  return registerInfo;
 };
 
-let submitSignUp = () => {
-  signUp().then((signUpInfo) => {
-    if (signUpInfo.success) {
+let submitRegister = () => {
+  register().then((registerInfo) => {
+    if (registerInfo.success) {
       location.href = "/login";
     } else {
-      alert(signUpInfo.msg);
+      alert(registerInfo.msg);
     }
   });
 };
