@@ -1,14 +1,10 @@
 "use strict";
 
-class UserStorage {
-  static #users = {
-    id: ["Nemoo", "Yeesisi", "Keeming"],
-    psWord: ["1234", "12345", "123456"],
-    name: ["Daegyu", "SiHyun", "Yurim"],
-  };
+const fs = require("fs").promises;
 
-  static getUserInfo(id) {
-    const users = this.#users;
+class UserStorage {
+  static #getUserInfo(data, id) {
+    const users = JSON.parse(data);
     const idx = users.id.indexOf(id);
     const userKeys = Object.keys(users);
     const userInfo = userKeys.reduce((newUser, info) => {
@@ -18,8 +14,17 @@ class UserStorage {
     return userInfo;
   }
 
+  static getUserInfo(id) {
+    return fs
+      .readFile("./src/databases/users.json")
+      .then((data) => {
+        return this.#getUserInfo(data, id);
+      })
+      .catch((err) => console.err(err));
+  }
+
   static save(userInfo) {
-    const users = this.#users;
+    //const users = this.#users;
     users.id.push(userInfo.id);
     users.psWord.push(userInfo.psWord);
     users.name.push(userInfo.name);
